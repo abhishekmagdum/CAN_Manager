@@ -16,7 +16,7 @@ typedef enum MessageID {
 } MessageID_et;
 
 // This status code will eventually be in a can.h file
-typedef enum CAN_Ret_et {
+typedef enum CAN_Ret {
     CAN_UNKNOWN_STATUS = 0,
     CAN_OK,
     CAN_ERROR,
