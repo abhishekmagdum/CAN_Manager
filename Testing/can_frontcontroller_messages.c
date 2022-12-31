@@ -3,6 +3,7 @@
 /*********************************************************
 *                       MACROS
 *********************************************************/
+#define MAX_MESSAGE_TABLE_SIZE (1U)
 
 #define CAN_BITS (64U)
 #define BIT_MASK(__length__) (UINT64_MAX >> (CAN_BITS - __length__))
@@ -91,14 +92,41 @@ CAN_Ret_et UnmarshalAMKSetpoints(uint8_t RawData[8], Endianness_et * Endianness)
     return CAN_OK;
 }
 
+//Test Function 
+CAN_Ret_et TEST_FUNCTION(void){
+    
+    printf("Test Function \n");
 
+    CAN_Ret_et ret = CAN_OK;
+    return ret;
+}
+
+/*********************************************************
+*                  FUNCTION POINTER TABLE
+*********************************************************/
+
+Message_st MESSAGE_TABLE[MAX_MESSAGE_TABLE_SIZE] = {
+
+    //MESSAGEID (ENUM),             ENDIANNESS (ENUM),          POINTER TO FUNCTION
+
+    // {AMK_SETPOINTS_CAN_ID,       LITTLE_ENDIAN,              &TEST_FUNCTION},
+    {AMK_SETPOINTS_CAN_ID,          LITTLE_ENDIAN,              &(UnmarshalAMKSetpoints)(RxData, LITTLE_ENDIAN)},
+
+};
 /*********************************************************
 *                    MAIN FUNCTION
 *********************************************************/
 int main()
 {
 
+    // testFunctionPointer = &TEST_FUNCTION;
+    // CAN_Ret_et ret = testFunctionPointer();
+    // printf("%d \n", ret);
+
     printf("Hello World \n");
+
+
+
 
     return 0;
 }
