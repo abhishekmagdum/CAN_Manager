@@ -110,7 +110,7 @@ Message_st MESSAGE_TABLE[MAX_MESSAGE_TABLE_SIZE] = {
     //MESSAGEID (ENUM),             ENDIANNESS (ENUM),          POINTER TO FUNCTION
 
     // {AMK_SETPOINTS_CAN_ID,       LITTLE_ENDIAN,              &TEST_FUNCTION},
-    {AMK_SETPOINTS_CAN_ID,          LITTLE_ENDIAN,              &(UnmarshalAMKSetpoints)(RxData, LITTLE_ENDIAN)},
+    {AMK_SETPOINTS_CAN_ID,          LITTLE_ENDIAN,              &UnmarshalAMKSetpoints},
 
 };
 /*********************************************************

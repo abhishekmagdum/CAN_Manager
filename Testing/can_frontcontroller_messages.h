@@ -57,7 +57,7 @@ typedef struct AMK_Setpoints{
 *                  FUNCTION POINTERS TYPE
 *********************************************************/
 
-//pointer to Unmarschal functions
+//Pointer to Unmarschal functions
 // typedef CAN_Ret_et (*BinaryUnmarshaller)(uint8_t[8], Endianness_et);
 
 
@@ -68,8 +68,8 @@ typedef struct Message{
     MessageID_et ID;
     Endianness_et Endianness;
     // BinaryUnmarshaller unmarshaller;
-    CAN_Ret_et (*BinaryUnmarshaller)(uint8_t[8], Endianness_et);
-    // CAN_Ret_et (*testFunctionPointer)(void);
+    CAN_Ret_et (*func)(uint8_t[8], Endianness_et *);
+    // CAN_Ret_et (*func)(void);
 } Message_st;
 
 /*********************************************************
