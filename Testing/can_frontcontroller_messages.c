@@ -119,14 +119,12 @@ Message_st MESSAGE_TABLE[MAX_MESSAGE_TABLE_SIZE] = {
 int main()
 {
 
-    // testFunctionPointer = &TEST_FUNCTION;
-    // CAN_Ret_et ret = testFunctionPointer();
-    // printf("%d \n", ret);
+    //printf("Hello World \n");
 
-    printf("Hello World \n");
-
-
-
+    // Testing the function pointer table implimentation:
+    CAN_Ret_et ret = MESSAGE_TABLE[0].func(RxData, &MESSAGE_TABLE[0].Endianness);
+    printf("%d \n", ret);
+    printf("%u \n", AMK_Setpoints.AMK_TargetVelocity);
 
     return 0;
 }
