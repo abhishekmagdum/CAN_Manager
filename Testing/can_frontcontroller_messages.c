@@ -25,8 +25,6 @@ uint32_t reverseBits(uint32_t num)
     return reverse_num;
 }
 
-
-
 // Before:  AB CD EF 12 34 56 78 90
 // After:   90 78 56 34 12 EF CD AB
 
@@ -92,15 +90,6 @@ CAN_Ret_et UnmarshalAMKSetpoints(uint8_t RawData[8], Endianness_et * Endianness)
     return CAN_OK;
 }
 
-//Test Function 
-CAN_Ret_et TEST_FUNCTION(void){
-    
-    printf("Test Function \n");
-
-    CAN_Ret_et ret = CAN_OK;
-    return ret;
-}
-
 /*********************************************************
 *                  FUNCTION POINTER TABLE
 *********************************************************/
@@ -108,8 +97,6 @@ CAN_Ret_et TEST_FUNCTION(void){
 Message_st MESSAGE_TABLE[MAX_MESSAGE_TABLE_SIZE] = {
 
     //MESSAGEID (ENUM),             ENDIANNESS (ENUM),          POINTER TO FUNCTION
-
-    // {AMK_SETPOINTS_CAN_ID,       LITTLE_ENDIAN,              &TEST_FUNCTION},
     {AMK_SETPOINTS_CAN_ID,          LITTLE_ENDIAN,              &UnmarshalAMKSetpoints},
 
 };
@@ -121,7 +108,6 @@ int main()
 
     //printf("Hello World \n");
 
-    // Testing the function pointer table implimentation:
     CAN_Ret_et ret = MESSAGE_TABLE[0].func(RxData, &MESSAGE_TABLE[0].Endianness);
     printf("%d \n", ret);
     printf("%u \n", AMK_Setpoints.AMK_TargetVelocity);
