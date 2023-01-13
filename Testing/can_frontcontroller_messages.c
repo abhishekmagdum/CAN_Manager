@@ -13,18 +13,6 @@
 *                    HELPER FUNCTIONS
 *********************************************************/
 
-//function from stackoverflow (works)
-uint32_t reverseBits(uint32_t num)
-{
-    uint32_t NO_OF_BITS = sizeof(num) * 8;
-    uint32_t reverse_num = 0;
-    for (uint8_t i = 0; i < NO_OF_BITS; i++) {
-        if ((num & (1 << i)))
-            reverse_num |= 1 << ((NO_OF_BITS - 1) - i);
-    }
-    return reverse_num;
-}
-
 // Before:  AB CD EF 12 34 56 78 90
 // After:   90 78 56 34 12 EF CD AB
 
@@ -50,8 +38,8 @@ static uint64_t getDataBigEndian(uint8_t RawData[8]) {
     return ret;
 }
 
-CAN_Ret_et getDataFromByteArray(uint8_t dataArr[8], uint64_t* dataOutput, Endianness_et* Endianness) {
-    switch (*Endianness)
+CAN_Ret_et getDataFromByteArray(uint8_t dataArr[8], uint64_t* dataOutput, Endianness_et Endianness) {
+    switch (Endianness)
     {
     case LITTLE_ENDIAN:
         *(dataOutput) = getDataLittleEndian(dataArr);
@@ -71,11 +59,12 @@ CAN_Ret_et getDataFromByteArray(uint8_t dataArr[8], uint64_t* dataOutput, Endian
 *                    CAN FUNCTIONS
 *********************************************************/
 
-CAN_Ret_et UnmarshalAMKSetpoints(uint8_t RawData[8], Endianness_et * Endianness) {
+CAN_Ret_et UnmarshalAMKSetpoints(uint8_t RawData[8]) {
     uint64_t data;
     AMK_Setpoints_st temp;
+    //static AMK_Setpoints_st temp;
     
-    CAN_Ret_et ret = getDataFromByteArray(RawData, &data, Endianness);
+    CAN_Ret_et ret = getDataFromByteArray(RawData, &data, AMK_SETPOINTS_ENDIANNESS);
     if (ret != CAN_OK) return ret;
 
     //  Read raw bits
@@ -96,10 +85,11 @@ CAN_Ret_et UnmarshalAMKSetpoints(uint8_t RawData[8], Endianness_et * Endianness)
 
 Message_st MESSAGE_TABLE[MAX_MESSAGE_TABLE_SIZE] = {
 
-    //MESSAGEID (ENUM),             ENDIANNESS (ENUM),          POINTER TO FUNCTION
-    {AMK_SETPOINTS_CAN_ID,          LITTLE_ENDIAN,              &UnmarshalAMKSetpoints},
+    //MESSAGEID (ENUM),          POINTER TO FUNCTION
+    {AMK_SETPOINTS_CAN_ID,       &UnmarshalAMKSetpoints},
 
 };
+
 /*********************************************************
 *                    MAIN FUNCTION
 *********************************************************/
@@ -108,7 +98,8 @@ int main()
 
     //printf("Hello World \n");
 
-    CAN_Ret_et ret = MESSAGE_TABLE[0].func(RxData, &MESSAGE_TABLE[0].Endianness);
+    // CAN_Ret_et ret = MESSAGE_TABLE[0].func(RxData, &MESSAGE_TABLE[0].Endianness);
+    CAN_Ret_et ret = MESSAGE_TABLE[0].Unmarshal(RxData);
     printf("%d \n", ret);
     printf("%u \n", AMK_Setpoints.AMK_TargetVelocity);
 

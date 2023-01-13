@@ -39,9 +39,9 @@ typedef enum CAN_Ret {
 
 //This contains endian type of incoming message
 typedef enum Endianness {
-    UNKNOWN_ENDIANNESS,
-    LITTLE_ENDIAN,
+    UNKNOWN_ENDIANNESS = 0,
     BIG_ENDIAN,
+    LITTLE_ENDIAN,
 } Endianness_et;
 
 /*********************************************************
@@ -54,17 +54,24 @@ typedef struct AMK_Setpoints{
 }AMK_Setpoints_st;
 
 /*********************************************************
-*                  FUNCTION POINTERS TYPE
+*                  MESSAGE WRAPPER STRUCT
 *********************************************************/
+
+typedef CAN_Ret_et BinaryUnmarshaller(uint8_t[8]);
 
 typedef struct Message{
     MessageID_et ID;
-    Endianness_et Endianness;
-    CAN_Ret_et (*func)(uint8_t[8], Endianness_et *);
+    BinaryUnmarshaller* Unmarshal;
 } Message_st;
 
 /*********************************************************
-*                         SIGNALS
+*                       MESSAGE MACROS
+*********************************************************/
+
+#define AMK_SETPOINTS_ENDIANNESS (LITTLE_ENDIAN)
+
+/*********************************************************
+*                       SIGNAL MACROS
 *********************************************************/
 
 // AMK_Setpoints: AMK_TempMotor
