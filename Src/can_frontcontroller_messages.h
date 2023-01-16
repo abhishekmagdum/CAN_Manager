@@ -57,11 +57,13 @@ typedef struct AMK_Setpoints{
 *                  MESSAGE WRAPPER STRUCT
 *********************************************************/
 
-typedef CAN_Ret_et BinaryUnmarshaller(uint8_t[8]);
+typedef CAN_Ret_et BinaryUnmarshaller(uint8_t*);
+typedef CAN_Ret_et BinaryMarshaller(uint8_t*);
 
 typedef struct Message{
     MessageID_et ID;
     BinaryUnmarshaller* Unmarshal;
+    BinaryMarshaller* Marshal;
 } Message_st;
 
 /*********************************************************
